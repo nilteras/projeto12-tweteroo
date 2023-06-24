@@ -1,6 +1,8 @@
 import express from "express"
+import cors from "cors"
 
 const app = express()
+app.use(cors())
 app.use(express.json())
 
 const user = [
@@ -10,7 +12,7 @@ const user = [
     }
 ];
 
-const tweet = [
+const tweets = [
     {
         username: "bobesponja",
         tweet: "Eu amo hambúrguer de siri!"
@@ -27,6 +29,15 @@ app.post('/sign-up', (req,res) => {
 })
 
 app.post('/tweets', (req,res) => {
+    const { username, tweet } = req.body
+    const newTweet = (username,tweet)
+
+    if(user.find((u) => u.username === username)){
+        tweets.push(newTweet)
+        res.send("OK")
+    } else {
+        res.send("UNAUTHORIZED")
+    }
     
 })
 
