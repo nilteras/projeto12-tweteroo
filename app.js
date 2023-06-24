@@ -6,33 +6,25 @@ app.use(cors())
 app.use(express.json())
 
 const user = [
-    {
-        username: 'bobesponja',
-        avatar: "https://cdn.shopify.com/s/files/1/0150/0643/3380/files/Screen_Shot_2019-07-01_at_11.35.42_AM_370x230@2x.png"
-    }
+ 
 ];
 
 const tweets = [
-    {
-        username: "bobesponja",
-        tweet: "Eu amo hambúrguer de siri!"
-    }
+   
 
 
 ];
 
 app.post('/sign-up', (req,res) => {
-    const { username, avatar } = req.body
-    const dataUser = (username,avatar)
+    const dataUser = (req.body)
     user.push(dataUser)
     res.send("OK")
 })
 
 app.post('/tweets', (req,res) => {
-    const { username, tweet } = req.body
-    const newTweet = (username,tweet)
+    const newTweet = (req.body)
 
-    if(user.find((u) => u.username === username)){
+    if(user.find((u) => u.username === newTweet.username)){
         tweets.push(newTweet)
         res.send("OK")
     } else {
@@ -42,7 +34,18 @@ app.post('/tweets', (req,res) => {
 })
 
 app.get('/tweets', (req,res) => {
-    
+
+    let lastTweets = [...tweets].reverse().slice(0,10)
+    let sendTweet = lastTweets.map( (t) => {
+        const userAvatar = user.find((n) => n.username === t.username);
+        return {
+            username: t.username,
+            tweet: t.tweet,
+            avatar: userAvatar.avatar
+        }
+    })
+    console.log(sendTweet)
+    res.send(sendTweet)
 })
 
 
