@@ -16,19 +16,47 @@ const tweets = [
 ];
 
 app.post('/sign-up', (req,res) => {
-    const dataUser = (req.body)
+
+   // const { username, avatar } = req.body
+    
+    if(!req.body.username || !req.body.avatar){
+        res.status(400).send("Todos os campos são obrigatórios!")
+        return
+    }
+
+    if((typeof req.body.username) !== "string" || (typeof req.body.avatar) !== 'string'){
+        res.status(400).send("Todos os campos são obrigatórios!")
+        return
+    }
+   
+    const dataUser = req.body
     user.push(dataUser)
-    res.send("OK")
+    console.log(user)
+    res.status(201).send("OK")
 })
 
 app.post('/tweets', (req,res) => {
-    const newTweet = (req.body)
+
+  //  const { username, tweet } = req.body
+
+    const newTweet = req.body
+
+    if(!req.body.username || !req.body.tweet){
+        res.status(400).send("Todos os campos são obrigatórios!")
+        return
+    }
+
+    if((typeof req.body.username) !== "string" || (typeof req.body.tweet) !== 'string'){
+        res.status(400).send("Todos os campos são obrigatórios!")
+        return
+    }
 
     if(user.find((u) => u.username === newTweet.username)){
         tweets.push(newTweet)
-        res.send("OK")
+        console.log(newTweet)
+        res.status(201).send("OK")
     } else {
-        res.send("UNAUTHORIZED")
+        res.status(401).send("UNAUTHORIZED")
     }
     
 })
